@@ -2,3 +2,4 @@
 config.json *.conf
 # user data
 users/*
+config.json
