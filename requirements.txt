@@ -1,0 +1,2 @@
+aiogram >= 2.0.0b2
+logging >= 0.5.1
