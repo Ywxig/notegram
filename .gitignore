@@ -1,4 +1,5 @@
 # Configuration files
 config.json *.conf
 # user data
-users/*
+users/*config.json
+users/
