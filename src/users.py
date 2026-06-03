@@ -1,25 +1,8 @@
 import os
 import json
 
-"""
-Id=1962342150
-is_bot=False
-first_name='Ywxig'
-last_name=None
-username='Ywxig'
-language_code='ru'
-is_premium=None
-added_to_attachment_menu=None
-can_join_groups=None
-can_read_all_group_messages=None
-supports_guest_queries=None
-supports_inline_queries=None
-can_connect_to_business=None
-has_main_web_app=None
-has_topics_enabled=None
-allows_users_to_create_topics=None
-can_manage_bots=None
-"""
+# import logger
+from src.log import logger
 
 class User:
 
@@ -69,3 +52,5 @@ class User:
                 }
 
                 json.dump(user_data, f)
+            
+            logger.info(f"User {self.id} created successfully")

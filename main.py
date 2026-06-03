@@ -6,6 +6,9 @@ from aiogram.filters import CommandStart
 # import src
 from src import users
 
+#import log for logging
+from src.log import logger
+
 # for config
 from config_loader import Config
 
@@ -24,10 +27,14 @@ dp = Dispatcher()
 async def cmd_start(message: types.Message):
     await message.answer("Hello, World! I'm your new bot. Write me something!")
     author = message.from_user
-    print(f"id:{author.id}\n first_name:{author.first_name}\nusername:{author.username}")
-    new_user = users.User(id=author.id, first_name=author.first_name, username=author.username)
-    new_user.create()
+    try:
+        new_user = users.User(id=author.id, first_name=author.first_name, username=author.username)
+        new_user.create()
+        await message.answer(f"your account created successfully, welcome {author.first_name}")
 
+    except Exception as e:
+        logger.error(f"Fatal error {e}")
+        await message.answer(f"sooting wrong...")
 
 # Main function for launching
 async def main():
