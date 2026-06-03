@@ -124,9 +124,10 @@ HELP_TEXT = (
     "<b>Команды:</b>\n"
     "/start — Создать аккаунт\n"
     "/help — Эта справка\n"
-    "/myfiles — Дерево файлов\n"
+    "/ls — Дерево файлов\n"
     "/mkdir &lt;папка&gt; — Создать папку\n"
-    "/delete &lt;путь&gt; — Удалить файл\n"
+    "/rmdir &lt;папка&gt; — Удалить папку\n"
+    "/rm &lt;путь&gt; — Удалить файл\n"
     "/repo &lt;ссылка&gt; — Привязать GitHub репозиторий\n\n"
     "<b>Загрузка файла в папку:</b>\n"
     "Отправьте файл с подписью <code>/add папка</code>\n"
@@ -171,6 +172,26 @@ async def handle_file_upload(message: types.Message, bot: Bot):
 
 
 #  /mkdir <dir>
+@dp.message(Command("rmdir"))
+async def cmd_mkdir(message: types.Message):
+    args = message.text.split(maxsplit=1)
+    if len(args) < 2:
+        await message.answer("Использование: /rmdir <имя папки>")
+        return
+
+    dir_name = args[1].strip()
+    uf = _uf(message.from_user)
+
+    try:
+        removed = uf.rmdir(dir_name)
+        if removed:
+            await message.answer(f"📁 Папка <code>{dir_name}</code> удалена.", parse_mode="HTML")
+        else:
+            await message.answer(f"📁 Папка <code>{dir_name}</code> должна быть пустой для удаления.", parse_mode="HTML")
+    except ValueError:
+        await message.answer("⚠️ Недопустимое имя папки.")
+
+#  /rmdir <dir>
 @dp.message(Command("mkdir"))
 async def cmd_mkdir(message: types.Message):
     args = message.text.split(maxsplit=1)
@@ -193,7 +214,7 @@ async def cmd_mkdir(message: types.Message):
 
 
 #  /myfiles — дерево с inline-кнопками
-@dp.message(Command("myfiles"))
+@dp.message(Command("ls"))
 async def cmd_myfiles(message: types.Message):
     author = message.from_user
     uf = _uf(author)
@@ -283,11 +304,11 @@ async def callback_delete(callback: types.CallbackQuery):
 
 
 #  /delete <rel_path>  — текстовая команда удаления
-@dp.message(Command("delete"))
+@dp.message(Command("rm"))
 async def cmd_delete(message: types.Message):
     args = message.text.split(maxsplit=1)
     if len(args) < 2:
-        await message.answer("Использование: /delete <путь к файлу>")
+        await message.answer("Использование: /rm <путь к файлу>")
         return
 
     rel_path = args[1].strip()
