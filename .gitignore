@@ -1,6 +1,21 @@
-# Configuration files
+__pycache__/
+.venv/
+*.pyc
+*.pyo
+
+# Logs
+logs/
+
+# User data
+users/
+
+# Config with secret token
 config.json
-# user data
-users/*
-config.json
-logs/*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

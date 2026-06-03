@@ -1,16 +1,17 @@
 import json
+import os
+
 
 class Config:
-    def __init__(self, path: str):
-        self.path = path
+    def __init__(self, filepath: str):
+        self.filepath = filepath
 
     def load(self) -> dict:
-        """this method for load config"""
-        with open(self.path, 'r') as f:
-            config = json.load(f)
-        return config
-    
-    def create(self, config: dict) -> None:
-        """this method for create config"""
-        with open(self.path, 'w') as f:
-            json.dump(config, f, indent=4)
+        if not os.path.exists(self.filepath):
+            raise FileNotFoundError(f"Config not found: {self.filepath}")
+        with open(self.filepath, "r") as f:
+            return json.load(f)
+
+    def create(self, data: dict):
+        with open(self.filepath, "w") as f:
+            json.dump(data, f, indent=2)
