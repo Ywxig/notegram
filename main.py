@@ -3,6 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import CommandStart
 
+# import src
+from src import users
+
 # for config
 from config_loader import Config
 
@@ -16,10 +19,14 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# 1. Reaction to the /start command
+# Reaction to the /start command
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message):
     await message.answer("Hello, World! I'm your new bot. Write me something!")
+    author = message.from_user
+    print(f"id:{author.id}\n first_name:{author.first_name}\nusername:{author.username}")
+    new_user = users.User(id=author.id, first_name=author.first_name, username=author.username)
+    new_user.create()
 
 
 # Main function for launching
