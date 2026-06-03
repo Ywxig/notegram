@@ -21,8 +21,6 @@ dp = Dispatcher()
 
 
 #  Helpers
-
-
 def _uf(user: types.User) -> users.UserFiles:
     return users.UserFiles(
         id=user.id,
@@ -112,7 +110,7 @@ async def cmd_start(message: types.Message):
     try:
         u = users.User(id=author.id, first_name=author.first_name, username=author.username)
         u.create()
-        await message.answer(f"👋 Привет, {author.first_name}! Аккаунт создан.")
+        await message.answer(f"Привет, {author.first_name}! Аккаунт создан.")
     except Exception as e:
         logger.error(f"/start error: {e}")
         await message.answer("Что-то пошло не так…")
@@ -120,17 +118,15 @@ async def cmd_start(message: types.Message):
 
 
 #  /help
-
-
 HELP_TEXT = (
-    "📋 <b>Команды:</b>\n"
+    "<b>Команды:</b>\n"
     "/start — Создать аккаунт\n"
     "/help — Эта справка\n"
     "/myfiles — Дерево файлов\n"
     "/mkdir &lt;папка&gt; — Создать папку\n"
     "/delete &lt;путь&gt; — Удалить файл\n"
     "/repo &lt;ссылка&gt; — Привязать GitHub репозиторий\n\n"
-    "📤 <b>Загрузка файла в папку:</b>\n"
+    "<b>Загрузка файла в папку:</b>\n"
     "Отправьте файл с подписью <code>/add папка</code>\n"
     "Если папка не существует — она создастся автоматически.\n"
     "Без подписи — файл сохранится в корень."
@@ -143,8 +139,6 @@ async def cmd_help(message: types.Message):
 
 
 #  Получение файла  (с опциональным /add <dir>)
-
-
 @dp.message(F.document)
 async def handle_file_upload(message: types.Message, bot: Bot):
     author = message.from_user
@@ -175,8 +169,6 @@ async def handle_file_upload(message: types.Message, bot: Bot):
 
 
 #  /mkdir <dir>
-
-
 @dp.message(Command("mkdir"))
 async def cmd_mkdir(message: types.Message):
     args = message.text.split(maxsplit=1)
@@ -199,8 +191,6 @@ async def cmd_mkdir(message: types.Message):
 
 
 #  /myfiles — дерево с inline-кнопками
-
-
 @dp.message(Command("myfiles"))
 async def cmd_myfiles(message: types.Message):
     author = message.from_user
@@ -212,8 +202,6 @@ async def cmd_myfiles(message: types.Message):
 
 
 #  Callback: toggle папки
-
-
 @dp.callback_query(F.data.startswith("tog:"))
 async def callback_toggle(callback: types.CallbackQuery):
     dir_path = callback.data[4:]
@@ -236,8 +224,6 @@ async def callback_toggle(callback: types.CallbackQuery):
 
 
 #  Callback: обновить
-
-
 @dp.callback_query(F.data == "refresh")
 async def callback_refresh(callback: types.CallbackQuery):
     uid = callback.from_user.id
@@ -253,8 +239,6 @@ async def callback_refresh(callback: types.CallbackQuery):
 
 
 #  Callback: скачать файл
-
-
 @dp.callback_query(F.data.startswith("dl:"))
 async def callback_download(callback: types.CallbackQuery):
     rel_path = callback.data[3:]
@@ -276,8 +260,6 @@ async def callback_download(callback: types.CallbackQuery):
 
 
 #  Callback: удалить файл (из дерева)
-
-
 @dp.callback_query(F.data.startswith("rm:"))
 async def callback_delete(callback: types.CallbackQuery):
     rel_path = callback.data[3:]
@@ -299,8 +281,6 @@ async def callback_delete(callback: types.CallbackQuery):
 
 
 #  /delete <rel_path>  — текстовая команда удаления
-
-
 @dp.message(Command("delete"))
 async def cmd_delete(message: types.Message):
     args = message.text.split(maxsplit=1)
@@ -319,8 +299,6 @@ async def cmd_delete(message: types.Message):
 
 
 #  /repo
-
-
 @dp.callback_query(F.data == "noop")
 async def callback_noop(callback: types.CallbackQuery):
     await callback.answer()
@@ -364,9 +342,14 @@ async def cmd_repo(message: types.Message):
 
 
 async def main():
+    # Setup logger and start bot
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
+    # check if /users folkder exist
+    if not os.path.exists("users"):
+        os.mkdir("users")
 
+# entery point
 if __name__ == "__main__":
     asyncio.run(main())
