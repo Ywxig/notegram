@@ -9,3 +9,8 @@ class Config:
         with open(self.path, 'r') as f:
             config = json.load(f)
         return config
+    
+    def create(self, config: dict) -> None:
+        """this method for create config"""
+        with open(self.path, 'w') as f:
+            json.dump(config, f, indent=4)

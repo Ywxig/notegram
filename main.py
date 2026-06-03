@@ -10,14 +10,16 @@ from src import users
 from src.log import logger
 from config_loader import Config
 
-CONFIG = Config("config.json").load()
-BOT_TOKEN = CONFIG["token"]
+try:
+    CONFIG = Config("config.json").load()
+    BOT_TOKEN = CONFIG["token"]
 
-logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
 
-bot = Bot(token=BOT_TOKEN)
-dp = Dispatcher()
-
+    bot = Bot(token=BOT_TOKEN)
+    dp = Dispatcher()
+except Exception as e:
+    logger.error(f"Error loading config: {e}")
 
 
 #  Helpers
@@ -349,6 +351,11 @@ async def main():
     # check if /users folkder exist
     if not os.path.exists("users"):
         os.mkdir("users")
+     
+    # check if config.json exist
+    if not os.path.exists("config.json"):
+        with open("config.json", "w") as f:
+            Config("config.json").create({"token" : "TOKEN"})
 
 # entery point
 if __name__ == "__main__":
