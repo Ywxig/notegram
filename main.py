@@ -5,6 +5,7 @@ import os
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import FSInputFile
+from aiogram.types import BotCommand
 
 from src import users
 from src.log import logger
@@ -98,14 +99,10 @@ def build_dir_keyboard(
 
 
 #  Per-user UI state  {user_id: set_of_open_dirs}
-
 _open_dirs: dict[int, set[str]] = {}
 
 
-
 #  /start
-
-
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message):
     author = message.from_user
@@ -135,10 +132,22 @@ HELP_TEXT = (
     "Без подписи — файл сохранится в корень."
 )
 
+# menu with all commands
 @dp.message(Command("help"))
 async def cmd_help(message: types.Message):
     await message.answer(HELP_TEXT, parse_mode="HTML")
 
+async def set_main_menu(bot: Bot):
+    main_menu_commands = [
+        BotCommand(command="ls", description="Показать список файлов/команд"),
+        BotCommand(command="help", description="Справка по использованию"),
+        BotCommand(command="mkdir", description="Создать папку"),
+        BotCommand(command="rmdir", description="Удалить папку"),
+        BotCommand(command="rm", description="Удалить файл"),
+        BotCommand(command="repo", description="Привязать GitHub репозиторий"),
+    ]
+    # Отправляем список команд в Telegram
+    await bot.set_my_commands(commands=main_menu_commands)
 
 
 #  Получение файла  (с опциональным /add <dir>)
@@ -365,6 +374,8 @@ async def cmd_repo(message: types.Message):
 
 
 async def main():
+    # Setup menu
+    await set_main_menu(bot)
     # Setup logger and start bot
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
