@@ -15,9 +15,9 @@ from utils.state import get_open_dirs
 
 router = Router()
 
-# ─────────────────────────────────────────────────────────
+
 #  /start
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(CommandStart())
 async def cmd_start(message: types.Message):
@@ -30,9 +30,9 @@ async def cmd_start(message: types.Message):
         await message.answer("❌ Что-то пошло не так…")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /help
-# ─────────────────────────────────────────────────────────
+
 
 _HELP = (
     "<b>📋 Команды:</b>\n"
@@ -53,9 +53,9 @@ async def cmd_help(message: types.Message):
     await message.answer(_HELP, parse_mode="HTML")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  File upload  (with optional caption /add <dir>)
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(F.document)
 async def handle_upload(message: types.Message):
@@ -82,9 +82,9 @@ async def handle_upload(message: types.Message):
         await message.answer("❌ Ошибка при сохранении файла.")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /ls
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(Command("ls"))
 async def cmd_ls(message: types.Message):
@@ -94,9 +94,9 @@ async def cmd_ls(message: types.Message):
     await message.answer("📂 <b>Ваши конспекты:</b>", parse_mode="HTML", reply_markup=markup)
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /mkdir
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(Command("mkdir"))
 async def cmd_mkdir(message: types.Message):
@@ -117,9 +117,9 @@ async def cmd_mkdir(message: types.Message):
         await message.answer("⚠️ Недопустимое имя папки.")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /rmdir
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(Command("rmdir"))
 async def cmd_rmdir(message: types.Message):
@@ -140,9 +140,9 @@ async def cmd_rmdir(message: types.Message):
         await message.answer("⚠️ Недопустимое имя папки.")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /rm
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(Command("rm"))
 async def cmd_rm(message: types.Message):
@@ -160,9 +160,9 @@ async def cmd_rm(message: types.Message):
         await message.answer(f"❌ Файл <code>{path}</code> не найден.", parse_mode="HTML")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  /repo
-# ─────────────────────────────────────────────────────────
+
 
 @router.message(Command("repo"))
 async def cmd_repo(message: types.Message):

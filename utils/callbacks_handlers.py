@@ -20,9 +20,9 @@ from utils.state import get_open_dirs, toggle_dir
 router = Router()
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Toggle folder
-# ─────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data.startswith("tog:"))
 async def cb_toggle(callback: types.CallbackQuery):
@@ -38,9 +38,9 @@ async def cb_toggle(callback: types.CallbackQuery):
     await callback.answer()
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Refresh tree
-# ─────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data == "refresh")
 async def cb_refresh(callback: types.CallbackQuery):
@@ -53,9 +53,9 @@ async def cb_refresh(callback: types.CallbackQuery):
     await callback.answer("🔄 Обновлено ✅")
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Download file
-# ─────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data.startswith("dl:"))
 async def cb_download(callback: types.CallbackQuery):
@@ -76,9 +76,9 @@ async def cb_download(callback: types.CallbackQuery):
         await callback.answer("❌ Ошибка при отправке файла.", show_alert=True)
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Delete file (from tree button)
-# ─────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data.startswith("rm:"))
 async def cb_delete(callback: types.CallbackQuery):
@@ -97,9 +97,9 @@ async def cb_delete(callback: types.CallbackQuery):
         pass
 
 
-# ─────────────────────────────────────────────────────────
+
 #  No-op (file name label buttons)
-# ─────────────────────────────────────────────────────────
+
 
 @router.callback_query(F.data == "noop")
 async def cb_noop(callback: types.CallbackQuery):

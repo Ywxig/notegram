@@ -15,9 +15,9 @@ from utils.menu import set_menu
 from utils.commands_handlers import router as cmd_router
 from utils.callbacks_handlers import router as cb_router
 
-# ─────────────────────────────────────────────────────────
+
 #  Config & bot setup
-# ─────────────────────────────────────────────────────────
+
 
 def _init_config() -> dict:
     if not os.path.exists("config.json"):
@@ -37,9 +37,9 @@ dp.include_router(cmd_router)
 dp.include_router(cb_router)
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Startup
-# ─────────────────────────────────────────────────────────
+
 
 def _init_dirs():
     os.makedirs("users", exist_ok=True)
@@ -54,9 +54,9 @@ async def main():
     await dp.start_polling(bot)
 
 
-# ─────────────────────────────────────────────────────────
+
 #  Entry point
-# ─────────────────────────────────────────────────────────
+
 
 if __name__ == "__main__":
     try:
